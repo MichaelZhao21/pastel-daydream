@@ -12,6 +12,14 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
+            <head>
+                <title>Pastel Daydream Party!</title>
+                <meta
+                    name="description"
+                    content="I'm throwing a pastel daydream-themed party! Please RSVP here and read through the details :D"
+                />
+                <link rel="icon" href="/favicon.ico" />
+            </head>
             <body
                 className="antialiased h-full w-full"
             >

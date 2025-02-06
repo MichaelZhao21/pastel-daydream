@@ -4,6 +4,7 @@ import { jua } from "./components/fonts";
 import Title from "./components/Title";
 import Text from "./components/Text";
 import { twMerge } from "tailwind-merge";
+import Head from "next/head";
 
 const Pink = (props: React.PropsWithChildren) => {
     return <span className="text-pink">{props.children}</span>;
@@ -17,6 +18,14 @@ export default function Home() {
                 jua.className
             )}
         >
+            <Head>
+                <title>Pastel Daydream Party!</title>
+                <meta
+                    name="description"
+                    content="I'm throwing a pastel daydream-themed party! Please RSVP here and read through the details :D"
+                />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <div className="flex flex-col items-center justify-center h-full w-full bg-white/25 rounded-lg backdrop-blur-md drop-shadow-md">
                 <div className="flex lg:flex-row flex-col-reverse w-full">
                     <div className="flex flex-col basis-1/2 grow lg:pl-6 px-4">
