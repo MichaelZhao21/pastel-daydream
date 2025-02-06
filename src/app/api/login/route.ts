@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     // If user not found, create user
     if (!user) {
         // Generate 16 character salt
-        const salt = randomBytes(8).toString();
+        const salt = randomBytes(8).toString('hex');
         const hash = genHash(salt, body.password);
 
         await db.collection('users').insertOne({
