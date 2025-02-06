@@ -1,20 +1,42 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { jua } from "./components/fonts";
 import Title from "./components/Title";
 import Text from "./components/Text";
 import { twMerge } from "tailwind-merge";
 import Head from "next/head";
+import TextInput from "./components/TextInput";
+import Button from "./components/Button";
 
 const Pink = (props: React.PropsWithChildren) => {
     return <span className="text-pink">{props.children}</span>;
 };
 
 export default function Home() {
+    const [loading, setLoading] = useState(true);
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    const [form, setForm] = useState({
+        email: "",
+        password: "",
+    });
+
+    useEffect(() => {
+        async function loadData() {
+            setLoading(false);
+        }
+
+        loadData();
+    });
+
+    const logIn = async () => {};
+
     return (
         <div
             className={twMerge(
-                "bg-[url(/images/clouds.webp)] bg-no-repeat bg-fixed bg-cover bg-center min-h-screen h-full w-full text-purple p-6 lg:p-12 ",
+                "bg-[url(/images/clouds.webp)] bg-no-repeat bg-fixed bg-cover bg-center min-h-screen h-max w-full text-purple p-6 lg:p-12 ",
                 jua.className
             )}
         >
@@ -26,7 +48,9 @@ export default function Home() {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div className="flex flex-col items-center justify-center h-full w-full bg-white/25 rounded-lg backdrop-blur-md drop-shadow-md">
+            {/* Card */}
+            <div className="flex flex-col justify-center h-full w-full bg-white/25 rounded-lg backdrop-blur-md drop-shadow-md">
+                {/* Header section (descr + image) */}
                 <div className="flex lg:flex-row flex-col-reverse w-full">
                     <div className="flex flex-col basis-1/2 grow lg:pl-6 px-4">
                         <Title className="text-6xl mt-6 text-center hidden lg:block">
@@ -79,6 +103,44 @@ export default function Home() {
                         Pastel Daydream Party!
                     </Title>
                 </div>
+
+                {/* Loading */}
+                {loading && (
+                    <div className="my-4">
+                        <div className="flex justify-center items-center h-32 my-16">
+                            <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-purple"></div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Log In */}
+                {!loading && !loggedIn && (
+                    <div className="mx-6 lg:mb-8 mb-6">
+                        <Title>Sign Up/Log In</Title>
+                        <div className="flex lg:flex-row flex-col w-full mb-4">
+                            <TextInput
+                                label="Email"
+                                value={form.email}
+                                placeholder="Full email"
+                                onChange={(value) =>
+                                    setForm({ ...form, email: value })
+                                }
+                                className="lg:mr-8"
+                            />
+                            <TextInput
+                                label="Password"
+                                value={form.password}
+                                placeholder="Password"
+                                onChange={(value) =>
+                                    setForm({ ...form, password: value })
+                                }
+                                password
+                                className="lg:ml-8"
+                            />
+                        </div>
+                        <Button onClick={logIn}>Submit</Button>
+                    </div>
+                )}
             </div>
         </div>
     );
