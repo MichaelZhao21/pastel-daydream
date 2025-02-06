@@ -31,7 +31,22 @@ export default function Home() {
         loadData();
     });
 
-    const logIn = async () => {};
+    const logIn = async () => {
+        // Log in
+        const response = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(form),
+        });
+
+        if (response.ok) {
+            setLoggedIn(true);
+        } else {
+            alert("Invalid email or password");
+        }
+    };
 
     return (
         <div
