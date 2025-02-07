@@ -109,6 +109,7 @@ export default function Home() {
 
     const logIn = async () => {
         // Log in
+        setLoading(true);
         const response = await fetch("/api/login", {
             method: "POST",
             headers: {
@@ -139,6 +140,8 @@ export default function Home() {
         } else {
             alert("Invalid email or password");
         }
+
+        setLoading(false);
     };
 
     const save = async () => {
