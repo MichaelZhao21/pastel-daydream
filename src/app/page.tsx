@@ -199,10 +199,12 @@ export default function Home() {
                         <Text>
                             Party will be happening on&nbsp;
                             <Pink>2/22 (Saturday)</Pink>, starting at&nbsp;
-                            <Pink>9pm</Pink>! The theme is&nbsp;
+                            <Pink>9pm</Pink>! The theme (and dress code)
+                            is&nbsp;
                             <Pink>“pastel daydream”</Pink>. Feel free to
                             interpret that however you like, but the poster has
-                            a couple of concepts you can use.
+                            a couple of concepts you can use. Don't be afraid to
+                            be as creative as you want with your outfits!
                         </Text>
                         <Text>
                             I’m asking everyone to pay me <Pink>$5</Pink> for
@@ -212,7 +214,7 @@ export default function Home() {
                         <Text>
                             We ask you to follow these <Pink>house rules</Pink>:
                             <ul className="list-disc ml-6">
-                                <li>No smoking of any kinda indoors</li>
+                                <li>No smoking of any kind indoors</li>
                                 <li>Please take off your shoes at the front</li>
                                 <li>Don’t go through cabinets/drawers</li>
                             </ul>
