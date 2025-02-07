@@ -17,11 +17,27 @@ const Pink = (props: React.PropsWithChildren) => {
     return <span className="text-pink">{props.children}</span>;
 };
 
+interface Attendee {
+    name: string;
+    rsvp: "yes" | "no" | "maybe";
+}
+
+interface FormFields {
+    email: string;
+    password: string;
+    name: string;
+    phone: string;
+    rsvp: string;
+    paid: string;
+    relation: string;
+    bringing: string;
+    music: string;
+}
+
 export default function Home() {
     const [loading, setLoading] = useState(true);
     const [loggedIn, setLoggedIn] = useState(false);
-
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<FormFields>({
         email: "",
         password: "",
         name: "",
@@ -32,6 +48,7 @@ export default function Home() {
         bringing: "",
         music: "",
     });
+    const [attendees, setAttendees] = useState<Attendee[]>([]);
 
     useEffect(() => {
         async function loadData() {
@@ -45,7 +62,7 @@ export default function Home() {
             });
 
             if (response.ok) {
-                // Get data
+                // Parse and save data
                 const data = await response.json();
                 setForm({
                     email: data.email,
@@ -60,6 +77,24 @@ export default function Home() {
                 });
 
                 setLoggedIn(true);
+
+                // Get the attendees
+                const attendeesResponse = await fetch("/api/data", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        credentials: "include",
+                    },
+                });
+                if (!attendeesResponse.ok) {
+                    alert(
+                        "Error loading attendees, please ask michael why his site is FUCKED"
+                    );
+                    return;
+                }
+                const na = await attendeesResponse.json();
+                const fna = na.filter((a: { rsvp: string }) => a.rsvp && a.rsvp !== "")
+                setAttendees(fna);
             }
 
             setLoading(false);
@@ -80,12 +115,19 @@ export default function Home() {
 
         if (response.ok) {
             // Get token
-            const { token } = await response.json();
+            const data = await response.json();
 
             // Set cookie
-            Cookies.set("token", token);
+            Cookies.set("token", data.token);
 
-            setForm({ ...form, password: "" });
+            delete data._id;
+            const fd = data as FormFields;
+
+            if (data.email) {
+                setForm({ ...fd, password: "" });
+            } else {
+                setForm({ ...form, password: "" });
+            }
             setLoggedIn(true);
         } else {
             alert("Invalid email or password");
@@ -344,6 +386,32 @@ export default function Home() {
                             >
                                 Log Out
                             </Button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Attendees */}
+                {!loading && loggedIn && (
+                    <div className="mx-6 lg:mb-8 mb-6">
+                        <div className="hidden text-yes text-maybe text-no">
+                            DUMMY TO LOAD COLORS
+                        </div>
+                        <Title>Attendees</Title>
+                        <Text>
+                            Here is a list of people that are coming with their
+                            RSVP status :)
+                        </Text>
+                        <div className="flex flex-row flex-wrap w-full gap-x-16">
+                            {attendees.map((attendee, index) => (
+                                <Text key={index} className="flex flex-col">
+                                    <span className="text-xl lg:text-3xl">
+                                        {attendee.name}
+                                    </span>
+                                    <span className={`text-${attendee.rsvp} lg:mt-0 mt-[-0.5rem]`}>
+                                        {attendee.rsvp}
+                                    </span>
+                                </Text>
+                            ))}
                         </div>
                     </div>
                 )}

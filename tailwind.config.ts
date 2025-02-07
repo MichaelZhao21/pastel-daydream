@@ -15,7 +15,10 @@ export default {
                 pink: '#EA5FD0',
                 blue: '#2157A9',
                 purpleLight: '#B791D0',
-                blueLight: '#4477C3'
+                blueLight: '#4477C3',
+                yes: '#7BD486',
+                no: '#CC1E1E',
+                maybe: '#E37337'
             },
         },
     },

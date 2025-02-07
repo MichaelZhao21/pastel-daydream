@@ -51,3 +51,27 @@ export async function POST(req: Request) {
 
     return new Response("Ok");
 }
+
+export async function GET(req: Request) {
+    // Get cookie
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token') as any;
+
+    // Check for token field
+    if (!token) {
+        return new Response('Token is required', { status: 400 });
+    }
+
+    // Check database for token
+    const user = await db.collection('users').findOne({ token: token.value });
+
+    // If user not found, return 401
+    if (!user) {
+        return new Response('Invalid token', { status: 401 });
+    }
+
+    // Get list of everyone
+    const users = await db.collection('users').find().project({ _id: 0, name: 1, rsvp: 1 }).toArray();
+
+    return Response.json(users);
+}

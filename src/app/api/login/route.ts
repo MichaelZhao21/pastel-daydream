@@ -45,6 +45,8 @@ export async function POST(req: Request) {
             password: `${salt}:${hash}`,
             token: token
         });
+
+        return Response.json({ token });
     } else {
         // Split password into salt and hash
         const [salt, hash] = user.password.split(':');
@@ -56,7 +58,8 @@ export async function POST(req: Request) {
 
         // Update token
         await db.collection('users').updateOne({ email: body.email }, { $set: { token } });
-    }
 
-    return Response.json({ token });
+        delete user?.password;
+        return Response.json({ ...user, token });
+    }
 }
