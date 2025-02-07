@@ -76,25 +76,9 @@ export default function Home() {
                     music: data.music,
                 });
 
-                setLoggedIn(true);
+                await getAttendees();
 
-                // Get the attendees
-                const attendeesResponse = await fetch("/api/data", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        credentials: "include",
-                    },
-                });
-                if (!attendeesResponse.ok) {
-                    alert(
-                        "Error loading attendees, please ask michael why his site is FUCKED"
-                    );
-                    return;
-                }
-                const na = await attendeesResponse.json();
-                const fna = na.filter((a: { rsvp: string }) => a.rsvp && a.rsvp !== "")
-                setAttendees(fna);
+                setLoggedIn(true);
             }
 
             setLoading(false);
@@ -102,6 +86,26 @@ export default function Home() {
 
         loadData();
     }, []);
+
+    const getAttendees = async () => {
+        // Get the attendees
+        const attendeesResponse = await fetch("/api/data", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                credentials: "include",
+            },
+        });
+        if (!attendeesResponse.ok) {
+            alert(
+                "Error loading attendees, please ask michael why his site is FUCKED"
+            );
+            return;
+        }
+        const na = await attendeesResponse.json();
+        const fna = na.filter((a: { rsvp: string }) => a.rsvp && a.rsvp !== "");
+        setAttendees(fna);
+    };
 
     const logIn = async () => {
         // Log in
@@ -128,6 +132,9 @@ export default function Home() {
             } else {
                 setForm({ ...form, password: "" });
             }
+
+            await getAttendees();
+
             setLoggedIn(true);
         } else {
             alert("Invalid email or password");
@@ -407,7 +414,9 @@ export default function Home() {
                                     <span className="text-xl lg:text-3xl">
                                         {attendee.name}
                                     </span>
-                                    <span className={`text-${attendee.rsvp} lg:mt-0 mt-[-0.5rem]`}>
+                                    <span
+                                        className={`text-${attendee.rsvp} lg:mt-0 mt-[-0.5rem]`}
+                                    >
                                         {attendee.rsvp}
                                     </span>
                                 </Text>
