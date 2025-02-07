@@ -5,7 +5,6 @@ export async function POST(req: Request) {
     // Get cookie
     const cookieStore = await cookies();
     const token = cookieStore.get('token') as any;
-    console.log(token);
 
     // Check for token field
     if (!token) {

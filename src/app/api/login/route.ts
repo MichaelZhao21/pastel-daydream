@@ -12,8 +12,8 @@ export async function POST(req: Request) {
     const body = (await req.json()) as LoginRequest;
 
     // Check for email and password fields
-    if (!body.email || !body.password) {
-        return new Response('Email and password are required', { status: 400 });
+    if (!body.email) {
+        return new Response('Email is required', { status: 400 });
     }
 
     // Make sure email is valid
@@ -26,6 +26,13 @@ export async function POST(req: Request) {
 
     // Generate random token
     const token = randomBytes(16).toString('hex');
+
+    // If user exists and no password, simply log the user in!
+    // This is to account for someone fucking up and then I just basically manually reset their password
+    if (user && user.password === '') {
+        await db.collection('users').updateOne({ email: body.email }, { $set: { token } });
+        return Response.json({ token });
+    }
 
     // If user not found, create user
     if (!user) {
