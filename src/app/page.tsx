@@ -351,7 +351,7 @@ export default function Home() {
                                 className="lg:ml-8 mb-4"
                             />
                         </div>
-                        <div className="flex lg:flex-row flex-col w-full lg:mb-4">
+                        <div className="flex lg:flex-row flex-col-reverse w-full lg:mb-4">
                             <Radio
                                 label="Paid $5? (Zelle 4695690174, Venmo @mikeyz314)"
                                 value={form.paid}
