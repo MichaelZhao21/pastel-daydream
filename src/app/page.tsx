@@ -10,6 +10,8 @@ import Head from "next/head";
 import TextInput from "./components/TextInput";
 import Button from "./components/Button";
 import Cookies from "js-cookie";
+import Radio from "./components/Radio";
+import TextAreaInput from "./components/TextAreaInput";
 
 const Pink = (props: React.PropsWithChildren) => {
     return <span className="text-pink">{props.children}</span>;
@@ -22,6 +24,13 @@ export default function Home() {
     const [form, setForm] = useState({
         email: "",
         password: "",
+        name: "",
+        phone: "",
+        rsvp: "",
+        paid: "",
+        relation: "",
+        bringing: "",
+        music: "",
     });
 
     useEffect(() => {
@@ -38,7 +47,17 @@ export default function Home() {
             if (response.ok) {
                 // Get data
                 const data = await response.json();
-                setForm({ ...form, email: data.email });
+                setForm({
+                    email: data.email,
+                    password: "",
+                    name: data.name,
+                    phone: data.phone,
+                    rsvp: data.rsvp,
+                    paid: data.paid,
+                    relation: data.relation,
+                    bringing: data.bringing,
+                    music: data.music,
+                });
 
                 setLoggedIn(true);
             }
@@ -66,10 +85,34 @@ export default function Home() {
             // Set cookie
             Cookies.set("token", token);
 
+            setForm({ ...form, password: "" });
             setLoggedIn(true);
         } else {
             alert("Invalid email or password");
         }
+    };
+
+    const save = async () => {
+        // Save data
+        const response = await fetch("/api/data", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                credentials: "include",
+            },
+            body: JSON.stringify(form),
+        });
+
+        if (response.ok) {
+            alert("Saved!");
+        } else {
+            alert("Error saving data");
+        }
+    };
+
+    const logOut = async () => {
+        Cookies.remove("token");
+        setLoggedIn(false);
     };
 
     return (
@@ -127,6 +170,10 @@ export default function Home() {
                             helpful for me to know how many people to prepare
                             for. <Pink>+1s are okay</Pink>, but please have them
                             fill out this form.
+                        </Text>
+                        <Text>
+                            For any questions, feel free to text me at&nbsp;
+                            <Pink>(469) 569 - 174</Pink>!
                         </Text>
                     </div>
                     <div className="flex flex-col items-center lg:basis-1/2 grow lg:p-6 lg:pt-6 p-4 pt-0">
@@ -189,6 +236,115 @@ export default function Home() {
                             Fill out your info pls! Feel free to save at any
                             time and come back to edit :3
                         </Text>
+                        <div className="flex lg:flex-row flex-col w-full">
+                            <TextInput
+                                label="Email"
+                                value={form.email}
+                                placeholder="Full email"
+                                onChange={(value) =>
+                                    setForm({ ...form, email: value })
+                                }
+                                className="lg:mr-8 mb-4"
+                            />
+                            <TextInput
+                                label="Password"
+                                value={form.password}
+                                placeholder="(unchanged)"
+                                onChange={(value) =>
+                                    setForm({ ...form, password: value })
+                                }
+                                password
+                                className="lg:ml-8 mb-4"
+                            />
+                        </div>
+                        <Radio
+                            label="RSVP Status"
+                            value={form.rsvp}
+                            options={["yes", "no", "maybe"]}
+                            optionLabels={[
+                                "Yes!",
+                                "No :(",
+                                "Maybe (change as soon as you know!)",
+                            ]}
+                            onChange={(value) =>
+                                setForm({ ...form, rsvp: value })
+                            }
+                            className="mb-4"
+                        />
+                        <div className="flex lg:flex-row flex-col w-full">
+                            <TextInput
+                                label="Full Name"
+                                value={form.name}
+                                placeholder="Full name"
+                                onChange={(value) =>
+                                    setForm({ ...form, name: value })
+                                }
+                                className="lg:mr-8 mb-4"
+                            />
+                            <TextInput
+                                label="Phone Number"
+                                value={form.phone}
+                                placeholder="Phone number"
+                                onChange={(value) =>
+                                    setForm({ ...form, phone: value })
+                                }
+                                className="lg:ml-8 mb-4"
+                            />
+                        </div>
+                        <div className="flex lg:flex-row flex-col w-full lg:mb-4">
+                            <Radio
+                                label="Paid $5? (Zelle 4695690174, Venmo @mikeyz314)"
+                                value={form.paid}
+                                options={["yes", "no", "bringing"]}
+                                optionLabels={[
+                                    "Yes!",
+                                    "Not Yet",
+                                    "Bringing Drinks (notate below)",
+                                ]}
+                                onChange={(value) =>
+                                    setForm({ ...form, paid: value })
+                                }
+                                className="mb-4 lg:mb-0 lg:basis-1/2"
+                            />
+                            <TextInput
+                                label="Relationship to Michael/roommates"
+                                value={form.relation}
+                                placeholder="Friend, friend of friend, etc."
+                                onChange={(value) =>
+                                    setForm({ ...form, relation: value })
+                                }
+                                className="grow lg:ml-8 mb-4"
+                            />
+                        </div>
+                        <div className="flex lg:flex-row flex-col w-full">
+                            <TextAreaInput
+                                label="Whatcha bringing? (if you don’t know that’s fine)"
+                                value={form.bringing}
+                                placeholder="Leave blank if paying"
+                                onChange={(value) =>
+                                    setForm({ ...form, bringing: value })
+                                }
+                                className="lg:mr-8 mb-4"
+                            />
+                            <TextAreaInput
+                                label="Music recs (spotify links if possible)"
+                                value={form.music}
+                                placeholder="Optional but appreciated :D"
+                                onChange={(value) =>
+                                    setForm({ ...form, music: value })
+                                }
+                                className="lg:ml-8 mb-4"
+                            />
+                        </div>
+                        <div className="flex lg:flex-row flex-col w-full justify-between">
+                            <Button onClick={save}>Save</Button>
+                            <Button
+                                onClick={logOut}
+                                className="mt-4 lg:mt-0 text-red-800 border-red-800 bg-red-400/50"
+                            >
+                                Log Out
+                            </Button>
+                        </div>
                     </div>
                 )}
             </div>

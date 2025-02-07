@@ -1,5 +1,6 @@
+import { genHash } from "@/app/components/hash";
 import db from "@/lib/mongodb";
-import { createHash, randomBytes } from "crypto";
+import { randomBytes } from "crypto";
 
 interface LoginRequest {
     email: string;
@@ -51,8 +52,4 @@ export async function POST(req: Request) {
     }
 
     return Response.json({ token });
-}
-
-function genHash(salt: string, password: string) {
-    return createHash('sha512').update(salt + password).digest('hex');
 }

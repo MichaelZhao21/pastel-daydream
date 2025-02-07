@@ -20,5 +20,7 @@ export async function POST(req: Request) {
         return new Response('Invalid token', { status: 401 });
     }
 
-    return Response.json({ email: user.email });
+    // Send user data without password hash
+    delete user.password;
+    return Response.json(user);
 }

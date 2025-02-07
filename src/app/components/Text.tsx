@@ -9,7 +9,7 @@ export default function Text({
     className?: string;
 }) {
     return (
-        <p className={twMerge("lg:text-lg text-purple mb-4", jua.className, className)}>
+        <p className={twMerge("lg:text-xl text-purple mb-4", jua.className, className)}>
             {children}
         </p>
     );

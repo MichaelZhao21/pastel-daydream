@@ -14,7 +14,8 @@ export default {
                 purple: '#A06FD6',
                 pink: '#EA5FD0',
                 blue: '#2157A9',
-                purpleLight: '#B791D0'
+                purpleLight: '#B791D0',
+                blueLight: '#4477C3'
             },
         },
     },
