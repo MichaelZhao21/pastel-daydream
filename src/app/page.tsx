@@ -22,6 +22,12 @@ interface Attendee {
     rsvp: "yes" | "no" | "maybe";
 }
 
+const rsvpMap = {
+    yes: "Yes!",
+    no: "No :(",
+    maybe: "Maybe...",
+}
+
 interface FormFields {
     email: string;
     password: string;
@@ -422,7 +428,7 @@ export default function Home() {
                                     <span
                                         className={`text-${attendee.rsvp} lg:mt-0 mt-[-0.5rem]`}
                                     >
-                                        {attendee.rsvp}
+                                        {rsvpMap[attendee.rsvp]}
                                     </span>
                                 </Text>
                             ))}
