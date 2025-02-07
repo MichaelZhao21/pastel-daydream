@@ -42,6 +42,8 @@ export async function POST(req: Request) {
         const salt = randomBytes(8).toString('hex');
         const hash = genHash(salt, body.password);
         body.password = `${salt}:${hash}`;
+    } else {
+        body.password = user.password;
     }
 
     // Update user
