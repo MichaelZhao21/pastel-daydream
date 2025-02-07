@@ -9,6 +9,7 @@ import { twMerge } from "tailwind-merge";
 import Head from "next/head";
 import TextInput from "./components/TextInput";
 import Button from "./components/Button";
+import Cookies from "js-cookie";
 
 const Pink = (props: React.PropsWithChildren) => {
     return <span className="text-pink">{props.children}</span>;
@@ -25,11 +26,28 @@ export default function Home() {
 
     useEffect(() => {
         async function loadData() {
+            // Check if logged in
+            const response = await fetch("/api/login/check", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    credentials: "include",
+                },
+            });
+
+            if (response.ok) {
+                // Get data
+                const data = await response.json();
+                setForm({ ...form, email: data.email });
+
+                setLoggedIn(true);
+            }
+
             setLoading(false);
         }
 
         loadData();
-    });
+    }, []);
 
     const logIn = async () => {
         // Log in
@@ -42,6 +60,12 @@ export default function Home() {
         });
 
         if (response.ok) {
+            // Get token
+            const { token } = await response.json();
+
+            // Set cookie
+            Cookies.set("token", token);
+
             setLoggedIn(true);
         } else {
             alert("Invalid email or password");
@@ -154,6 +178,17 @@ export default function Home() {
                             />
                         </div>
                         <Button onClick={logIn}>Submit</Button>
+                    </div>
+                )}
+
+                {/* Info */}
+                {!loading && loggedIn && (
+                    <div className="mx-6 lg:mb-8 mb-6">
+                        <Title>Your Info</Title>
+                        <Text>
+                            Fill out your info pls! Feel free to save at any
+                            time and come back to edit :3
+                        </Text>
                     </div>
                 )}
             </div>
