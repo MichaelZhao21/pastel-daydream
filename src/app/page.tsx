@@ -26,7 +26,7 @@ const rsvpMap = {
     yes: "Yes!",
     no: "No :(",
     maybe: "Maybe...",
-}
+};
 
 interface FormFields {
     email: string;
@@ -38,6 +38,7 @@ interface FormFields {
     relation: string;
     bringing: string;
     music: string;
+    notes: string;
 }
 
 export default function Home() {
@@ -53,6 +54,7 @@ export default function Home() {
         relation: "",
         bringing: "",
         music: "",
+        notes: "",
     });
     const [attendees, setAttendees] = useState<Attendee[]>([]);
 
@@ -80,6 +82,7 @@ export default function Home() {
                     relation: data.relation,
                     bringing: data.bringing,
                     music: data.music,
+                    notes: data.notes,
                 });
 
                 await getAttendees();
@@ -135,7 +138,7 @@ export default function Home() {
             const fd = data as FormFields;
 
             if (data.email) {
-                setForm({ ...fd, password: "" });
+                setForm({ ...form, ...fd, password: "" });
             } else {
                 setForm({ ...form, password: "" });
             }
@@ -214,8 +217,9 @@ export default function Home() {
                         </Text>
                         <Text>
                             I’m asking everyone to pay me <Pink>$5</Pink> for
-                            the drinks unless you’re bringing your own. Feel
-                            free to bring whatever drinks or snacks you want!
+                            the drinks and snacks unless you’re bringing your
+                            own. Feel free to bring whatever drinks or snacks
+                            you want!
                         </Text>
                         <Text>
                             We ask you to follow these <Pink>house rules</Pink>:
@@ -359,7 +363,7 @@ export default function Home() {
                                 optionLabels={[
                                     "Yes!",
                                     "Not Yet",
-                                    "Bringing Drinks (notate below)",
+                                    "Bringing Drinks/Snacks (notate below)",
                                 ]}
                                 onChange={(value) =>
                                     setForm({ ...form, paid: value })
@@ -396,6 +400,15 @@ export default function Home() {
                                 className="lg:ml-8 mb-4"
                             />
                         </div>
+                        <TextAreaInput
+                            label="Additional Comments"
+                            value={form.notes}
+                            placeholder="Anything else you want to tell me :3"
+                            onChange={(value) =>
+                                setForm({ ...form, notes: value })
+                            }
+                            className="mb-4"
+                        />
                         <div className="flex lg:flex-row flex-col w-full justify-between">
                             <Button onClick={save}>Save</Button>
                             <Button
