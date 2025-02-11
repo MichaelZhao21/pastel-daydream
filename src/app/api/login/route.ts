@@ -21,8 +21,10 @@ export async function POST(req: Request) {
         return new Response('Invalid email', { status: 400 });
     }
 
+    const email = body.email.toLowerCase();
+
     // Check database for email
-    const user = await db.collection('users').findOne({ email: body.email });
+    const user = await db.collection('users').findOne({ email });
 
     // Generate random token
     const token = randomBytes(16).toString('hex');
@@ -30,7 +32,7 @@ export async function POST(req: Request) {
     // If user exists and no password, simply log the user in!
     // This is to account for someone fucking up and then I just basically manually reset their password
     if (user && user.password === '') {
-        await db.collection('users').updateOne({ email: body.email }, { $set: { token } });
+        await db.collection('users').updateOne({ email }, { $set: { token } });
         return Response.json({ token });
     }
 
@@ -41,7 +43,7 @@ export async function POST(req: Request) {
         const hash = genHash(salt, body.password);
 
         await db.collection('users').insertOne({
-            email: body.email,
+            email,
             password: `${salt}:${hash}`,
             token: token
         });
@@ -57,7 +59,7 @@ export async function POST(req: Request) {
         }
 
         // Update token
-        await db.collection('users').updateOne({ email: body.email }, { $set: { token } });
+        await db.collection('users').updateOne({ email }, { $set: { token } });
 
         delete user?.password;
         return Response.json({ ...user, token });
