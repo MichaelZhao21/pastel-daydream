@@ -12,6 +12,8 @@ import Button from "./components/Button";
 import Cookies from "js-cookie";
 import Radio from "./components/Radio";
 import TextAreaInput from "./components/TextAreaInput";
+import { User } from "./components/User";
+import ColorDummy from "./components/ColorDummy";
 
 const Pink = (props: React.PropsWithChildren) => {
     return <span className="text-pink">{props.children}</span>;
@@ -28,23 +30,10 @@ const rsvpMap = {
     maybe: "Maybe...",
 };
 
-interface FormFields {
-    email: string;
-    password: string;
-    name: string;
-    phone: string;
-    rsvp: string;
-    paid: string;
-    relation: string;
-    bringing: string;
-    music: string;
-    notes: string;
-}
-
 export default function Home() {
     const [loading, setLoading] = useState(true);
     const [loggedIn, setLoggedIn] = useState(false);
-    const [form, setForm] = useState<FormFields>({
+    const [form, setForm] = useState<User>({
         email: "",
         password: "",
         name: "",
@@ -135,7 +124,7 @@ export default function Home() {
             Cookies.set("token", data.token);
 
             delete data._id;
-            const fd = data as FormFields;
+            const fd = data as User;
 
             if (data.email) {
                 setForm({ ...form, ...fd, password: "" });
@@ -424,9 +413,7 @@ export default function Home() {
                 {/* Attendees */}
                 {!loading && loggedIn && (
                     <div className="mx-6 lg:mb-8 mb-6">
-                        <div className="hidden text-yes text-maybe text-no">
-                            DUMMY TO LOAD COLORS
-                        </div>
+                        <ColorDummy />
                         <Title>Attendees</Title>
                         <Text>
                             Here is a list of people that are coming with their

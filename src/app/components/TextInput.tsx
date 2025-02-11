@@ -1,4 +1,5 @@
 import { twMerge } from "tailwind-merge";
+import { jua } from "./fonts";
 
 interface TextInputProps {
     value: string;
@@ -20,7 +21,9 @@ export default function TextInput(props: TextInputProps) {
                 placeholder={props.placeholder}
                 type={props.password ? "password" : "text"}
             />
-            <label className="text-sm text-blue">{props.label}</label>
+            <label className={`${jua.className} text-sm text-blue`}>
+                {props.label}
+            </label>
         </div>
     );
 }
