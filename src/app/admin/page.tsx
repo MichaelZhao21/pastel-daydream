@@ -129,6 +129,7 @@ export default function Admin() {
             </div>
 
             <div className="flex flex-col items-start">
+                <Title>Total People: {users.length}</Title>
                 <div className="flex flex-row justify-between items-start text-left text-xl w-full underline">
                     <h2 className="grow pr-2">Name</h2>
                     <p className="mr-4">Paid</p>
