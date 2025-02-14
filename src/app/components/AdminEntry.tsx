@@ -1,3 +1,5 @@
+import ArrowDown from "./ArrowDown";
+import ArrowUp from "./ArrowUp";
 import { User } from "./User";
 import { jua } from "./fonts";
 
@@ -28,12 +30,14 @@ export default function AdminEntry({
             : "text-blue";
 
     return (
-        <div
-            className={`${jua.className} w-full cursor-pointer`}
-            onClick={() => setExpanded(!expanded)}
-        >
-            <div className="flex justify-between items-start text-left text-xl">
-                <h2 className="grow pr-2">{user.name}</h2>
+        <div className={`${jua.className} w-full`}>
+            <div
+                className="flex justify-between items-center text-left text-xl cursor-pointer"
+                onClick={() => setExpanded(!expanded)}
+            >
+                <h2 className="pr-2">{user.name}</h2>
+                {expanded ? <ArrowUp /> : <ArrowDown />}
+                <div className="grow"></div>
                 <p className={`${paidColor} mr-4`}>{paid}</p>
                 <p className={`${rsvpColor}`}>{rsvp}</p>
             </div>
