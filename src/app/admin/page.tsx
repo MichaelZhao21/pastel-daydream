@@ -154,7 +154,7 @@ export default function Admin() {
             </div>
             
             <Title className="mt-4">Didn't fill out form</Title>
-            <ul className="list-disc ml-4 mb-4">
+            <ul className="list-disc ml-4 pb-8">
                 {badUsers.map((user) => (
                     <li>{user.email}</li>
                 ))}
