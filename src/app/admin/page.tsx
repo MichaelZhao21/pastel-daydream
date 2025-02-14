@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import AdminEntry from "../components/AdminEntry";
 import { User } from "../components/User";
 import { jua } from "../components/fonts";
+import Text from "../components/Text";
 
 export default function Admin() {
     const [loading, setLoading] = useState(true);
@@ -129,7 +130,10 @@ export default function Admin() {
             </div>
 
             <div className="flex flex-col items-start">
-                <Title>Total People: {users.length}</Title>
+                <Text className="mt-4 mb-0 text-2xl lg:text-3xl">Total: {users.length}</Text>
+                <Text className="my-0 text-yes">RSVP Yes: {users.filter((user) => user.rsvp === "yes").length}</Text>
+                <Text className="my-0 text-maybe">RSVP Maybe: {users.filter((user) => user.rsvp === "maybe").length}</Text>
+                <Text className="mt-0 text-no">RSVP No: {users.filter((user) => user.rsvp === "no").length}</Text>
                 <div className="flex flex-row justify-between items-start text-left text-xl w-full underline">
                     <h2 className="grow pr-2">Name</h2>
                     <p className="mr-4">Paid</p>
@@ -150,7 +154,7 @@ export default function Admin() {
             </div>
             
             <Title className="mt-4">Didn't fill out form</Title>
-            <ul className="list-disc ml-4">
+            <ul className="list-disc ml-4 mb-4">
                 {badUsers.map((user) => (
                     <li>{user.email}</li>
                 ))}
