@@ -17,7 +17,7 @@ export async function GET(req: Request) {
     }
 
     // Get list of everyone
-    const users = await db.collection('users').find().project({ _id: 0, name: 1, rsvp: 1, bringing: 1, music: 1, paid: 1, phone: 1, relation: 1, email: 1 }).toArray();
+    const users = await db.collection('users').find().project({ _id: 0, name: 1, rsvp: 1, bringing: 1, music: 1, paid: 1, phone: 1, relation: 1, email: 1, notes: 1 }).toArray();
 
     return Response.json(users);
 }
